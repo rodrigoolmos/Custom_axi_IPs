@@ -1,6 +1,8 @@
 # axi_lite_tester
 this file contains a tester for an axi lite with the core for the test and a example test bench
 
+***MARK -> 99%***
+Tested with vivado and brams and isolated simulations
 
 ```
 files:
