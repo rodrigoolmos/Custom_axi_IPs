@@ -48,6 +48,10 @@ Working mode DECODE
 | 8    | 1 RAW 0 DECODE|
 | 16   | 1 RAW 0 DECODE|
 | 24   | 1 RAW 0 DECODE|
+| 32   | 1 RAW 0 DECODE|
+| 40   | 1 RAW 0 DECODE|
+| 48   | 1 RAW 0 DECODE|
+| 56   | 1 RAW 0 DECODE|
 
 ```
 Files:
