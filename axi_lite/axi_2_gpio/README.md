@@ -9,7 +9,7 @@ This file contains a IP for an axi slave to GPIO.<br>
 Tested with TB and a zynq with vitis
 
 ### REGISTER MAP
-|    OFSET     | Encabezado 2 |
+|    OFSET     | USE |
 |--------------|--------------|
 | 0x00000      | GPIO OUT     |
 | 0x00004      | GPIO IN      |
