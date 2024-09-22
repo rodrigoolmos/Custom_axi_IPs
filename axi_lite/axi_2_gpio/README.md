@@ -5,7 +5,7 @@ This file contains a IP for an axi slave to uart.<br>
 Tested with TB and a zynq with vitis
 
 ´´´
-        REGISTER MAP
+### REGISTER MAP
 |    OFSET     | Encabezado 2 |
 |--------------|--------------|
 | 0x00000      | GPIO OUT     |
@@ -13,12 +13,12 @@ Tested with TB and a zynq with vitis
 
 ### GPIO OUT
 
-| N to 0     | GPIO TO WRITE |
+| N to 0     | GPIO TO WRITE ON 1 OFF 0|
 |------------|---------------|
 
 ### GPIO IN
 
-| N to 0     | GPIO TO READ   |
+| N to 0     | GPIO TO READ  ON 1 OFF 0|
 |------------|----------------|
 
 ´´´
