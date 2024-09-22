@@ -22,6 +22,10 @@ Tested with TB and a zynq with vitis
 |------------|----------------|
 
 ´´´
-
+´´´
+Files:
+axi_2_gpio.vhd -> IP
+vitis.c -> TB
+´´´
 
 <br>
