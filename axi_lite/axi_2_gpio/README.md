@@ -2,7 +2,7 @@
 This file contains a IP for an axi slave to GPIO.<br>
 <br>
 
-###IP:
+### IP:
 ![IP](IP.png)
 
 ***MARK -> 99%***
