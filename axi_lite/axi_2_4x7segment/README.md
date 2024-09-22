@@ -21,33 +21,24 @@ Working mode RAW
 | 7 to 0     | Display0 Dp-G-F-E-D-C-B-A|
 |------------|---------------|
 | 15 to 8    | Display1 Dp-G-F-E-D-C-B-A|
-|------------|---------------|
 | 23 to 16   | Display2 Dp-G-F-E-D-C-B-A|
-|------------|---------------|
 | 31 to 24   | Display3 Dp-G-F-E-D-C-B-A|
-|------------|---------------|
 
 Working mode DECODE
 
 | 7 to 0     | Display0 HEX num|
 |------------|---------------|
 | 15 to 8    | Display1 HEX num|
-|------------|---------------|
 | 23 to 16   | Display2 HEX num|
-|------------|---------------|
 | 31 to 24   | Display3 HEX num|
-|------------|---------------|
 
 ### MODE OF WORKING 
 
 | 0     | 1 RAW 0 DECODE|
 |------------|---------------|
 | 8    | 1 RAW 0 DECODE|
-|------------|---------------|
 | 16   | 1 RAW 0 DECODE|
-|------------|---------------|
 | 24   | 1 RAW 0 DECODE|
-|------------|---------------|
 
 ```
 Files:
