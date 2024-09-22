@@ -2,17 +2,12 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity axi_MAX7219 is
+entity axi_2_MAX7219 is
     generic (
         -- Users to add parameters here
-        CLK_FREQ : natural := 100000000;
+        CLK_FREQ : natural := 100000000
         -- User parameters ends
         -- Do not modify the parameters beyond this line
-
-        -- Width of S_AXI data bus
-        C_S_AXI_DATA_WIDTH    : integer    := 32;
-        -- Width of S_AXI address bus
-        C_S_AXI_ADDR_WIDTH    : integer    := 4
     );
     port (
         -- Users to add ports here
@@ -24,54 +19,54 @@ entity axi_MAX7219 is
 
         S_AXI_ACLK    : in std_logic;
         S_AXI_ARESETN    : in std_logic;
-        S_AXI_AWADDR    : in std_logic_vector(C_S_AXI_ADDR_WIDTH-1 downto 0);
+        S_AXI_AWADDR    : in std_logic_vector(4-1 downto 0);
         S_AXI_AWPROT    : in std_logic_vector(2 downto 0);
         S_AXI_AWVALID    : in std_logic;
         S_AXI_AWREADY    : out std_logic;
-        S_AXI_WDATA    : in std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0);
-        S_AXI_WSTRB    : in std_logic_vector((C_S_AXI_DATA_WIDTH/8)-1 downto 0);
+        S_AXI_WDATA    : in std_logic_vector(32-1 downto 0);
+        S_AXI_WSTRB    : in std_logic_vector((32/8)-1 downto 0);
         S_AXI_WVALID    : in std_logic;
         S_AXI_WREADY    : out std_logic;
         S_AXI_BRESP    : out std_logic_vector(1 downto 0);
         S_AXI_BVALID    : out std_logic;
         S_AXI_BREADY    : in std_logic;
-        S_AXI_ARADDR    : in std_logic_vector(C_S_AXI_ADDR_WIDTH-1 downto 0);
+        S_AXI_ARADDR    : in std_logic_vector(4-1 downto 0);
         S_AXI_ARPROT    : in std_logic_vector(2 downto 0);
         S_AXI_ARVALID    : in std_logic;
         S_AXI_ARREADY    : out std_logic;
-        S_AXI_RDATA    : out std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0);
+        S_AXI_RDATA    : out std_logic_vector(32-1 downto 0);
         S_AXI_RRESP    : out std_logic_vector(1 downto 0);
         S_AXI_RVALID    : out std_logic;
         S_AXI_RREADY    : in std_logic
     );
-end axi_MAX7219;
+end axi_2_MAX7219;
 
-architecture arch_imp of axi_MAX7219 is
+architecture arch_imp of axi_2_MAX7219 is
 
     -- AXI4LITE signals
-    signal axi_awaddr    : std_logic_vector(C_S_AXI_ADDR_WIDTH-1 downto 0);
+    signal axi_awaddr    : std_logic_vector(4-1 downto 0);
     signal axi_awready    : std_logic;
     signal axi_wready    : std_logic;
     signal axi_bresp    : std_logic_vector(1 downto 0);
     signal axi_bvalid    : std_logic;
-    signal axi_araddr    : std_logic_vector(C_S_AXI_ADDR_WIDTH-1 downto 0);
+    signal axi_araddr    : std_logic_vector(4-1 downto 0);
     signal axi_arready    : std_logic;
-    signal axi_rdata    : std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0);
+    signal axi_rdata    : std_logic_vector(32-1 downto 0);
     signal axi_rresp    : std_logic_vector(1 downto 0);
     signal axi_rvalid    : std_logic;
 
     -- Example-specific design signals
-    -- local parameter for addressing 32 bit / 64 bit C_S_AXI_DATA_WIDTH
+    -- local parameter for addressing 32 bit / 64 bit 32
     -- ADDR_LSB is used for addressing 32/64 bit registers/memories
     -- ADDR_LSB = 2 for 32 bits (n downto 2)
     -- ADDR_LSB = 3 for 64 bits (n downto 3)
-    constant ADDR_LSB  : integer := (C_S_AXI_DATA_WIDTH/32)+ 1;
+    constant ADDR_LSB  : integer := (32/32)+ 1;
     constant OPT_MEM_ADDR_BITS : integer := 1;
 
     ---- Number of Slave Registers 4
     signal slv_reg_rden    : std_logic;
     signal slv_reg_wren    : std_logic;
-    signal reg_data_out    :std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0);
+    signal reg_data_out    :std_logic_vector(32-1 downto 0);
     signal byte_index_s    : integer;
     signal aw_en    : std_logic;
 
@@ -263,7 +258,7 @@ begin
         case loc_addr is
             when b"01" =>
                 reg_data_out(0) <= done;
-                reg_data_out(C_S_AXI_DATA_WIDTH - 1 downto 1) <= (others => '0');
+                reg_data_out(32 - 1 downto 1) <= (others => '0');
             when others =>
                 reg_data_out  <= (others => '0');
         end case;

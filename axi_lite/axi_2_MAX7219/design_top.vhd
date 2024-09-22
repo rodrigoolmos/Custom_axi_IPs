@@ -27,7 +27,7 @@ end entity design_top;
 architecture rtl of design_top is
     constant AXI_SLAVE_ADDR_WITH : natural := 4;
     
-    component axi_MAX7219 is
+    component axi_2_MAX7219 is
         port (
             SDO   : out     std_logic;
             SCL   : out     std_logic;
@@ -55,7 +55,7 @@ architecture rtl of design_top is
             S_AXI_ACLK : in STD_LOGIC;
             S_AXI_ARESETN : in STD_LOGIC
         );
-    end component axi_MAX7219;
+    end component axi_2_MAX7219;
 
     component master_axi_base_top is
         port (
@@ -155,7 +155,7 @@ begin
         m00_axi_wvalid => master_test_0_M00_AXI_WVALID
     );
     
-    axi_MAX72190: component axi_MAX7219
+    axi_2_MAX72190: component axi_2_MAX7219
     port map (
         SDO => SDO,
         SCL => SCL,
