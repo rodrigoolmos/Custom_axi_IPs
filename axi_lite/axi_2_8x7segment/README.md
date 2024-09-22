@@ -11,10 +11,12 @@ Tested with TB and a zynq with vitis
 ### REGISTER MAP
 |    OFSET     | USE |
 |--------------|--------------|
-| 0x00000      | DATA TO BE DISPLAYED      |
-| 0x00004      | MODE OF WORKING      |
+| 0x00000      | DATA TO BE DISPLAYED LOW     |
+| 0x00004      | MODE OF WORKING   LOW   |
+| 0x00008      | DATA TO BE DISPLAYED HIGHT     |
+| 0x0000C      | MODE OF WORKING   HIGHT   |
 
-### DATA TO BE DISPLAYED
+### DATA TO BE DISPLAYED LOW / HIGHT
 
 Working mode RAW
 
@@ -23,10 +25,6 @@ Working mode RAW
 | 15 to 8    | Display1 Dp-G-F-E-D-C-B-A|
 | 23 to 16   | Display2 Dp-G-F-E-D-C-B-A|
 | 31 to 24   | Display3 Dp-G-F-E-D-C-B-A|
-| 39 to 32   | Display1 Dp-G-F-E-D-C-B-A|
-| 47 to 40   | Display2 Dp-G-F-E-D-C-B-A|
-| 55 to 48   | Display3 Dp-G-F-E-D-C-B-A|
-| 63 to 56   | Display3 Dp-G-F-E-D-C-B-A|
 
 
 Working mode DECODE
@@ -36,22 +34,14 @@ Working mode DECODE
 | 15 to 8    | Display1 HEX num|
 | 23 to 16   | Display2 HEX num|
 | 31 to 24   | Display3 HEX num|
-| 39 to 32   | Display4 HEX num|
-| 47 to 40   | Display5 HEX num|
-| 55 to 48   | Display6 HEX num|
-| 63 to 56   | Display7 HEX num|
 
-### MODE OF WORKING 
+### MODE OF WORKING LOW / HIGHT
 
 | 0     | 1 RAW 0 DECODE|
 |------------|---------------|
 | 8    | 1 RAW 0 DECODE|
 | 16   | 1 RAW 0 DECODE|
 | 24   | 1 RAW 0 DECODE|
-| 32   | 1 RAW 0 DECODE|
-| 40   | 1 RAW 0 DECODE|
-| 48   | 1 RAW 0 DECODE|
-| 56   | 1 RAW 0 DECODE|
 
 ```
 Files:
