@@ -1,5 +1,5 @@
-# AXI to uart IP
-This file contains a IP for an axi slave to uart.<br>
+# AXI to GPIO IP
+This file contains a IP for an axi slave to GPIO.<br>
 <br>
 ***MARK -> 99%***
 Tested with TB and a zynq with vitis
