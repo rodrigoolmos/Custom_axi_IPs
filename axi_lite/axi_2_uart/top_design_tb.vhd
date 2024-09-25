@@ -101,7 +101,7 @@ begin
         nrst <= '1';
         wait until rising_edge(clk);
         
-        -- rx part
+        -- RX PART
         -- check empty works
         wait for 1 ms;
         wait until rising_edge(clk);
@@ -111,13 +111,35 @@ begin
         m00_axi_init_axi_rxn <= '0';
         wait until m00_axi_rxn_ready = '1';
         
+        -- make 256 rx transactions from 0 to 255
         for i in 0 to 255 loop
             byte_tx_tmp <= std_logic_vector(to_unsigned(i, byte_tx_tmp'length));
             wait for 1 ps;
             simulate_tx(byte_tx_tmp, uart_rx);
         end loop;
+        
         -- ckeck full works
-        wait for 40 us;
+        wait for 100 us;
+        wait until rising_edge(clk);
+        m00_axi_init_axi_rxn <= '1';
+        test_araddr <= x"0000000C";
+        wait until rising_edge(clk);
+        m00_axi_init_axi_rxn <= '0';
+        wait until m00_axi_rxn_ready = '1';
+        wait for 100 us;
+        
+        -- read rx fifo
+        for i in 0 to 255 loop
+            wait until rising_edge(clk);
+            m00_axi_init_axi_rxn <= '1';
+            test_araddr <= x"00000008";
+            wait until rising_edge(clk);
+            m00_axi_init_axi_rxn <= '0';
+            wait until m00_axi_rxn_ready = '1';
+        end loop;
+        
+        -- check empty works
+        wait for 100 us;
         wait until rising_edge(clk);
         m00_axi_init_axi_rxn <= '1';
         test_araddr <= x"0000000C";
@@ -126,22 +148,24 @@ begin
         wait until m00_axi_rxn_ready = '1';
         wait for 100 us;
 
-        -- read rx fifo
-        for i in 0 to 255 loop
-            wait until rising_edge(clk);
-            m00_axi_init_axi_rxn <= '1';
-            test_araddr <= x"00000008";
-            wait until rising_edge(clk);
-            m00_axi_init_axi_rxn <= '0';
-            wait until m00_axi_rxn_ready = '1';
-        end loop;
         
+        -- make 256 rx transactions from 0 to 255
         for i in 0 to 255 loop
             byte_tx_tmp <= std_logic_vector(to_unsigned(i, byte_tx_tmp'length));
             wait for 1 ps;
             simulate_tx(byte_tx_tmp, uart_rx);
         end loop;
 
+        -- ckeck full works
+        wait for 100 us;
+        wait until rising_edge(clk);
+        m00_axi_init_axi_rxn <= '1';
+        test_araddr <= x"0000000C";
+        wait until rising_edge(clk);
+        m00_axi_init_axi_rxn <= '0';
+        wait until m00_axi_rxn_ready = '1';
+        wait for 100 us;
+        
         -- read rx fifo
         for i in 0 to 255 loop
             wait until rising_edge(clk);
@@ -152,8 +176,17 @@ begin
             wait until m00_axi_rxn_ready = '1';
         end loop;
         
+        -- check empty works
+        wait for 100 us;
+        wait until rising_edge(clk);
+        m00_axi_init_axi_rxn <= '1';
+        test_araddr <= x"0000000C";
+        wait until rising_edge(clk);
+        m00_axi_init_axi_rxn <= '0';
+        wait until m00_axi_rxn_ready = '1';
         wait for 100 us;
         
+        -- toggle rx transaction read axi fifo
         for i in 0 to 255 loop
             byte_tx_tmp <= std_logic_vector(to_unsigned(i, byte_tx_tmp'length));
             wait for 1 ps;
@@ -167,7 +200,9 @@ begin
             wait until m00_axi_rxn_ready = '1';
         end loop;
         
-        wait for 100 us;
+        -- TX PART
+        -- check empty works
+        wait for 1000 us;
         wait until rising_edge(clk);
         m00_axi_init_axi_rxn <= '1';
         test_araddr <= x"00000004";
@@ -178,7 +213,7 @@ begin
         for i in 0 to 255 loop
 
             m00_axi_init_axi_txn <= '1';
-            test_wdata <= std_logic_vector(to_unsigned(i, test_wdata'length));
+            test_wdata <= std_logic_vector(to_unsigned(i + 11, test_wdata'length));
             test_awaddr <= x"00000000";
             wait until rising_edge(clk);
             m00_axi_init_axi_txn <= '0';
@@ -194,14 +229,14 @@ begin
             end loop;
         end loop;
         
-        wait for 1 ms;
+        wait for 10 ms;
         wait until rising_edge(clk);
 
         
         for i in 0 to 255 loop
 
             m00_axi_init_axi_txn <= '1';
-            test_wdata <= std_logic_vector(to_unsigned(i, test_wdata'length));
+            test_wdata <= std_logic_vector(to_unsigned(i + 10, test_wdata'length));
             test_awaddr <= x"00000000";
             wait until rising_edge(clk);
             m00_axi_init_axi_txn <= '0';
@@ -217,8 +252,164 @@ begin
             end loop;
         end loop;
         
-        wait for 1 ms;
+        wait for 10 ms;
         
+        m00_axi_init_axi_txn <= '1';
+        test_wdata <= std_logic_vector(to_unsigned(20, test_wdata'length));
+        test_awaddr <= x"00000000";
+        wait until rising_edge(clk);
+        m00_axi_init_axi_txn <= '0';
+        wait until m00_axi_txn_ready = '1';
+        wait for 100 us;
+
+        
+        m00_axi_init_axi_txn <= '1';
+        test_wdata <= std_logic_vector(to_unsigned(30, test_wdata'length));
+        test_awaddr <= x"00000000";
+        wait until rising_edge(clk);
+        m00_axi_init_axi_txn <= '0';
+        wait until m00_axi_txn_ready = '1';
+        wait for 100 us;
+
+        
+        m00_axi_init_axi_txn <= '1';
+        test_wdata <= std_logic_vector(to_unsigned(40, test_wdata'length));
+        test_awaddr <= x"00000000";
+        wait until rising_edge(clk);
+        m00_axi_init_axi_txn <= '0';
+        wait until m00_axi_txn_ready = '1';
+        wait for 100 us;
+        
+        m00_axi_init_axi_txn <= '1';
+        test_wdata <= std_logic_vector(to_unsigned(50, test_wdata'length));
+        test_awaddr <= x"00000000";
+        wait until rising_edge(clk);
+        m00_axi_init_axi_txn <= '0';
+        wait until m00_axi_txn_ready = '1';
+        wait for 100 us;
+
+        
+        m00_axi_init_axi_txn <= '1';
+        test_wdata <= std_logic_vector(to_unsigned(60, test_wdata'length));
+        test_awaddr <= x"00000000";
+        wait until rising_edge(clk);
+        m00_axi_init_axi_txn <= '0';
+        wait until m00_axi_txn_ready = '1';
+        wait for 100 us;
+
+        
+        m00_axi_init_axi_txn <= '1';
+        test_wdata <= std_logic_vector(to_unsigned(70, test_wdata'length));
+        test_awaddr <= x"00000000";
+        wait until rising_edge(clk);
+        m00_axi_init_axi_txn <= '0';
+        wait until m00_axi_txn_ready = '1';
+        wait for 100 us;
+
+        loop
+            m00_axi_init_axi_rxn <= '1';
+            test_araddr <= x"00000004";
+            wait until rising_edge(clk);
+            m00_axi_init_axi_rxn <= '0';
+            wait until m00_axi_rxn_ready = '1';
+            exit when (test_rdata(1) = '0');
+        end loop;
+        wait for 100 us;
+        
+        m00_axi_init_axi_txn <= '1';
+        test_wdata <= std_logic_vector(to_unsigned(11, test_wdata'length));
+        test_awaddr <= x"00000000";
+        wait until rising_edge(clk);
+        m00_axi_init_axi_txn <= '0';
+        wait until m00_axi_txn_ready = '1';
+        wait for 100 us;
+
+        loop
+            m00_axi_init_axi_rxn <= '1';
+            test_araddr <= x"00000004";
+            wait until rising_edge(clk);
+            m00_axi_init_axi_rxn <= '0';
+            wait until m00_axi_rxn_ready = '1';
+            exit when (test_rdata(1) = '0');
+        end loop;
+        wait for 100 us;
+        
+        m00_axi_init_axi_txn <= '1';
+        test_wdata <= std_logic_vector(to_unsigned(22, test_wdata'length));
+        test_awaddr <= x"00000000";
+        wait until rising_edge(clk);
+        m00_axi_init_axi_txn <= '0';
+        wait until m00_axi_txn_ready = '1';
+        wait for 100 us;
+
+        loop
+            m00_axi_init_axi_rxn <= '1';
+            test_araddr <= x"00000004";
+            wait until rising_edge(clk);
+            m00_axi_init_axi_rxn <= '0';
+            wait until m00_axi_rxn_ready = '1';
+            exit when (test_rdata(1) = '0');
+        end loop;
+        
+        m00_axi_init_axi_txn <= '1';
+        test_wdata <= std_logic_vector(to_unsigned(33, test_wdata'length));
+        test_awaddr <= x"00000000";
+        wait until rising_edge(clk);
+        m00_axi_init_axi_txn <= '0';
+        wait until m00_axi_txn_ready = '1';
+        
+        m00_axi_init_axi_txn <= '1';
+        test_wdata <= std_logic_vector(to_unsigned(44, test_wdata'length));
+        test_awaddr <= x"00000000";
+        wait until rising_edge(clk);
+        m00_axi_init_axi_txn <= '0';
+        wait until m00_axi_txn_ready = '1';
+        
+        m00_axi_init_axi_txn <= '1';
+        test_wdata <= std_logic_vector(to_unsigned(55, test_wdata'length));
+        test_awaddr <= x"00000000";
+        wait until rising_edge(clk);
+        m00_axi_init_axi_txn <= '0';
+        wait until m00_axi_txn_ready = '1';
+        
+        m00_axi_init_axi_txn <= '1';
+        test_wdata <= std_logic_vector(to_unsigned(66, test_wdata'length));
+        test_awaddr <= x"00000000";
+        wait until rising_edge(clk);
+        m00_axi_init_axi_txn <= '0';
+        wait until m00_axi_txn_ready = '1';
+        
+        m00_axi_init_axi_txn <= '1';
+        test_wdata <= std_logic_vector(to_unsigned(77, test_wdata'length));
+        test_awaddr <= x"00000000";
+        wait until rising_edge(clk);
+        m00_axi_init_axi_txn <= '0';
+        wait until m00_axi_txn_ready = '1';
+        
+        m00_axi_init_axi_txn <= '1';
+        test_wdata <= std_logic_vector(to_unsigned(88, test_wdata'length));
+        test_awaddr <= x"00000000";
+        wait until rising_edge(clk);
+        m00_axi_init_axi_txn <= '0';
+        wait until m00_axi_txn_ready = '1';
+        
+        m00_axi_init_axi_txn <= '1';
+        test_wdata <= std_logic_vector(to_unsigned(99, test_wdata'length));
+        test_awaddr <= x"00000000";
+        wait until rising_edge(clk);
+        m00_axi_init_axi_txn <= '0';
+        wait until m00_axi_txn_ready = '1';
+
+        loop
+            m00_axi_init_axi_rxn <= '1';
+            test_araddr <= x"00000004";
+            wait until rising_edge(clk);
+            m00_axi_init_axi_rxn <= '0';
+            wait until m00_axi_rxn_ready = '1';
+            exit when (test_rdata(1) = '0');
+        end loop;
+        
+        wait for 10 ms;
         finished <= '1';
         wait;
     end process test_axi_uart_tx;
@@ -241,7 +432,8 @@ begin
             if write_addres_tb > 254 then
                 write_addres_tb <= 0;
                 wait for bite_time ;
-                for item in 1 to 255 loop
+                wait for 100 us;
+                for item in 0 to 255 loop
                     memory_tb(item) <= (others => '0');
                 end loop;
             end if;

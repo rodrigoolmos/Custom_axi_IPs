@@ -90,9 +90,11 @@ architecture arch_imp of axi_lite_uart is
     -- fifo_rx
     constant fifo_rx_data_width : natural := 8;
     signal fifo_rx_full         : std_logic;
-    signal fifo_rx_ena_read   : std_logic;
+    signal fifo_rx_ena_read     : std_logic;
     signal fifo_rx_empty        : std_logic;
     signal data_read_rx         : std_logic_vector(fifo_rx_data_width-1 downto 0);
+    signal next_empty_rx :      std_logic;
+    signal next_full_rx :       std_logic;
     
     -- fifo_tx
     constant fifo_tx_data_width : natural := 8;
@@ -100,7 +102,9 @@ architecture arch_imp of axi_lite_uart is
     signal fifo_tx_ena_write    : std_logic;
     signal fifo_tx_empty        : std_logic;
     signal data_read_tx         : std_logic_vector(fifo_tx_data_width-1 downto 0);
-
+    signal fifo_tx_ena_read     : std_logic;
+    signal next_empty_tx :      std_logic;
+    signal next_full_tx :       std_logic;
 
     -- AXI4LITE signals
     signal axi_awaddr    : std_logic_vector(3 downto 0);
@@ -148,6 +152,8 @@ architecture arch_imp of axi_lite_uart is
             ena_read :   in     std_logic;
             empty :      out    std_logic;
             full :       out    std_logic;
+            next_empty :    out    std_logic;
+            next_full :     out    std_logic;
             data_write : in     std_logic_vector(fifo_tx_data_width -1 downto 0);
             data_read :  out    std_logic_vector(fifo_tx_data_width -1 downto 0)
         );
@@ -433,21 +439,6 @@ begin
     -- Add user logic here
     fifo_tx_ena_write <= S_AXI_WVALID AND axi_wready;
     
-    fifo_tx: fifo
-    generic map(
-        addr_deep => fifo_deep)
-    port map
-    (
-        CLK        => S_AXI_ACLK ,
-        nrst       => S_AXI_ARESETN ,
-        ena_write  => fifo_tx_ena_write ,
-        ena_read   => done_tx ,
-        empty      => fifo_tx_empty ,
-        full       => fifo_tx_full ,
-        data_write => S_AXI_WDATA(fifo_tx_data_width - 1 downto 0) ,
-        data_read  => data_read_tx
-    );
-    
     process( S_AXI_ACLK ) is
     begin
         if (rising_edge (S_AXI_ACLK)) then
@@ -460,24 +451,9 @@ begin
         end if;
     end process;
     
-    fifo_rx_ena_read <=  S_AXI_ARADDR(3) and  (not S_AXI_ARADDR(2)) and S_AXI_ARVALID and (not axi_arvalid);
-    
-    fifo_rx: fifo
-    generic map(
-        addr_deep => fifo_deep)
-    port map
-    (
-        CLK        => S_AXI_ACLK ,
-        nrst       => S_AXI_ARESETN ,
-        ena_write  => byte_ready,
-        ena_read   => fifo_rx_ena_read,
-        empty      => fifo_rx_empty,
-        full       => fifo_rx_full,
-        data_write => byte_rx,
-        data_read  => data_read_rx
-    );
-    
-    start_tx <= not fifo_tx_empty or fifo_tx_ena_write;
+    fifo_rx_ena_read <=  S_AXI_ARADDR(3) and  (not S_AXI_ARADDR(2)) and slv_reg_rden;
+    start_tx <= (not fifo_tx_empty and not next_empty_tx) or fifo_tx_ena_write;
+    fifo_tx_ena_read <= not fifo_tx_empty and done_tx;
     
     u1: uart
     generic map(
@@ -495,7 +471,39 @@ begin
         byte_tx => data_read_tx
     );
     
+    fifo_rx: fifo
+    generic map(
+        addr_deep => fifo_deep)
+    port map
+    (
+        CLK        => S_AXI_ACLK ,
+        nrst       => S_AXI_ARESETN ,
+        ena_write  => byte_ready,
+        ena_read   => fifo_rx_ena_read,
+        empty      => fifo_rx_empty,
+        full       => fifo_rx_full,
+        next_empty => next_empty_rx,
+        next_full  => next_full_rx,
+        data_write => byte_rx,
+        data_read  => data_read_rx
+    );
     
+    fifo_tx: fifo
+    generic map(
+        addr_deep => fifo_deep)
+    port map
+    (
+        CLK        => S_AXI_ACLK ,
+        nrst       => S_AXI_ARESETN ,
+        ena_write  => fifo_tx_ena_write ,
+        ena_read   => fifo_tx_ena_read ,
+        empty      => fifo_tx_empty ,
+        full       => fifo_tx_full ,
+        next_empty => next_empty_tx,
+        next_full  => next_full_tx,
+        data_write => S_AXI_WDATA(fifo_tx_data_width - 1 downto 0) ,
+        data_read  => data_read_tx
+    );
     -- User logic ends
 
 end arch_imp;
