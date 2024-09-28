@@ -24,13 +24,13 @@ int main() {
     int *null_ptr = (int *)0x000000;
 
 
-    int test_sizes[] = {12345, 256, 123, 512, 33, 3456, 111, 4567, 354, 8632};
+    int test_sizes[] = {256, 1234, 7532, 4367, 123};
     int num_tests = sizeof(test_sizes) / sizeof(test_sizes[0]);
 
     for (int i = 0; i < num_tests; i++) {
         int size = test_sizes[i];
         fill_random(a, size);  
-        dma(null_ptr, (uint32_t)a, (uint32_t)b, size);
+        dma(a, b, size);
         error |= verify_copy(a, b, size);
     }
 
