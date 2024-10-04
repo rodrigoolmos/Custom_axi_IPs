@@ -16,12 +16,12 @@ Tested with TB and a zynq with vitis
 
 ### GPIO OUT
 
-| N to 0     | GPIO TO WRITE ON 1 OFF 0|
+| bits N to 0     | GPIO TO WRITE ON 1 OFF 0|
 |------------|---------------|
 
 ### GPIO IN
 
-| N to 0     | GPIO TO READ  ON 1 OFF 0|
+| bits N to 0     | GPIO TO READ  ON 1 OFF 0|
 |------------|----------------|
 
 ```
