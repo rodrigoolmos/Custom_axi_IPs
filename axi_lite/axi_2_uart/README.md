@@ -4,6 +4,7 @@ This file contains a IP for an axi slave to UART.<br>
 
 ### IP:
 ![IP](IP.png)
+![IP](IP2.png)
 
 ***MARK -> 99%***
 Tested with TB and a zynq with vitis
