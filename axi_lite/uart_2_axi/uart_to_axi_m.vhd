@@ -2,7 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity master_axi_base_top is
+entity uart_to_axi_m is
     generic (
         clk_tics_per_bit : integer := 6;
         C_M00_AXI_ADDR_WIDTH    : integer    := 32;
@@ -37,9 +37,9 @@ entity master_axi_base_top is
         m00_axi_rvalid    : in std_logic;
         m00_axi_rready    : out std_logic
     );
-end master_axi_base_top;
+end uart_to_axi_m;
 
-architecture arch_imp of master_axi_base_top is
+architecture arch_imp of uart_to_axi_m is
     ----------------------------------------------------------------------
     -- Add user signals here
     -- use example
