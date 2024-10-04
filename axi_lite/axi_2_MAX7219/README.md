@@ -16,12 +16,12 @@ Tested with TB and a zynq with vitis
 
 ### CMD TO SEND
 
-| 15 to 0     | CMD TO SEND TO MAX7219|
+| bits 15 to 0     | CMD TO SEND TO MAX7219|
 |------------|---------------|
 
 ### IP READY 
 
-| 0     | IP READY 1 bussy 0|
+| bit 0     | IP READY 1 bussy 0|
 |------------|---------------|
 
 
