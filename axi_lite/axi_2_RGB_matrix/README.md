@@ -14,7 +14,7 @@ Tested with TB and a zynq with vitis
 ### CUSTOMZING THE IP:
 ![IP](customizing_ip.png)
 
-max_cnt = clk divider
+max_cnt = clk divider => f_clk/max_cnt = CLock_O
 debub = '1' shows a pattern
 debub = '0' normal use
 
