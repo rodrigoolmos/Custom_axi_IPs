@@ -14,6 +14,10 @@ Tested with TB and a zynq with vitis
 ### CUSTOMZING THE IP:
 ![IP](customizing_ip.png)
 
+max_cnt = clk divider
+debub = '1' shows a pattern
+debub = '0' normal use
+
 ```
 Files:
     constrains_nexysA7.xdc => constrains_nexysA7
