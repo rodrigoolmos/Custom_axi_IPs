@@ -24,6 +24,7 @@ Files:
     axi_to_rgb_matrix.vhd => top IP
     bram.vhd => bram
     RGB_matrix.vhd => translator form bram addres to matrix rgb signals
+    tools/draw_tool => python screept for drawing in the screen
 ```
 
 <br>
